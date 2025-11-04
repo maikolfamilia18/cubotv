@@ -1,7 +1,15 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="CuboTV API", version="1.0")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permitir todos los orígenes (puedes limitarlo más adelante)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # ===============================
 # MODELOS
@@ -59,3 +67,4 @@ def login(data: LoginRequest):
     if data.username == "admin" and data.password == "1234":
         return {"success": True, "token": "fake-jwt-token-123"}
     raise HTTPException(status_code=401, detail="Invalid credentials")
+
